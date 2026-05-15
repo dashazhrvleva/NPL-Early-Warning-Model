@@ -262,7 +262,7 @@ git clone https://github.com/dashazhrvleva/NPL-Early-Warning-Model.git
 cd NPL-Early-Warning-Model
 
 # 2. Open in Google Colab or Jupyter
-# Upload: dataset_final_clean_-_Sheet1__3_.csv
+# Upload: dataset.csv
 
 # 3. Run cells sequentially
 # Each section has markdown explanations before code blocks
