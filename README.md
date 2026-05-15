@@ -30,8 +30,8 @@ Formal tests confirm a statistically significant regime shift:
 | Test | Statistic | p-value | Result |
 |------|-----------|---------|--------|
 | Chow test (full model, 18 params) | F = 1.25 | 0.31 | Not significant — low power |
-| Chow test (top-5 SHAP variables) | F = 5.22 | < 0.001 | ✅ Significant at 0.1% level |
-| Interaction test | 6 variables | p < 0.10 | ✅ 4 sign changes |
+| Chow test (top-5 SHAP variables) | F = 5.22 | < 0.001 | Significant at 0.1% level |
+| Interaction test | 6 variables | p < 0.10 | 4 sign changes |
 
 ## 3. Complete Rotation of Top-5 Predictors Between Regimes
 
