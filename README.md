@@ -267,3 +267,107 @@ cd NPL-Early-Warning-Model
 # 3. Run cells sequentially
 # Each section has markdown explanations before code blocks
 ```
+### Notebook Sections
+
+```
+Part 0:   Setup & Imports
+Part I:   Exploratory Data Analysis
+  1.1     NPL dynamics + crisis markers
+  1.2     Descriptive statistics (skew, kurtosis)
+  1.3     Time series visualization
+  1.4     Stationarity tests (ADF + KPSS)
+  1.5     Correlation analysis (Pearson + Spearman)
+  1.6     Cross-correlation functions (CCF)
+  1.7     Granger causality
+  1.8     Multicollinearity (VIF)
+  1.9     Feature engineering + final dataset
+
+Part II:  Model Comparison
+  2.1     Walk-forward validation setup
+  2.2     Baselines: Naive + AR(1)
+  2.3     OLS with HAC standard errors
+  2.4     Lasso (L1 regularization)
+  2.5     Ridge (L2 regularization)
+  2.6     Diebold-Mariano test
+
+Part III: SHAP Interpretation
+  3.1     Global feature importance (bar plot)
+  3.2     Effect distribution (beeswarm)
+  3.3     Local explanation (waterfall)
+  3.4     Temporal SHAP evolution
+
+Part IV:  Structural Break Analysis
+  4.1     Chow test (full + reduced model)
+  4.2     Interaction effects test
+  4.3     Regime-dependent SHAP
+
+Part V:   EWS Signal Evaluation
+  5.1     Threshold rule + classification metrics
+  5.2     ROC curve (AUC)
+  5.3     Robustness: without lag features
+  5.4     Bootstrap validation (1000 iterations)
+
+Part VI:  Forecast 2026
+  6.1     Final model training
+  6.2     Point forecast + 95% CI
+  6.3     SHAP decomposition of forecast
+  6.4     Scenario analysis
+```
+
+---
+
+## Technical Notes
+
+### Walk-Forward Validation
+
+No future data is used in training at any point:
+
+```
+Fold 1: Train[1..40]  → Predict[41]
+Fold 2: Train[1..41]  → Predict[42]
+...
+Fold n: Train[1..n]   → Predict[n+1]
+```
+
+Standardization (`StandardScaler`) is applied within each fold on training data only. Regularization parameters (α) are selected via `TimeSeriesSplit` within the training window.
+
+### No Data Leakage — Three Checks
+
+1. **Threshold:** computed on training data within each fold
+2. **Lag features:** removing them *improves* R² (0.87 → 0.90), confirming no look-ahead bias
+3. **Bootstrap AUC:** 95% CI = [1.000, 1.000] across 1,000 iterations
+
+### Why Ridge over Lasso
+
+At H=12, Lasso achieves R²=0.06 while Ridge achieves R²=0.87. This 14x gap is explained by the **distributed signal hypothesis**: the NPL forecast signal is spread across many correlated macro variables. L1 regularization zeros out most of them, losing the signal. L2 shrinks without zeroing, preserving it.
+
+---
+
+## References
+
+1. Acharya, V.V. (2009). A theory of systemic risk and design of prudential bank regulation. *Journal of Financial Stability*, 5(3), 224–255.
+
+2. Drehmann, M., & Juselius, M. (2014). Evaluating early warning indicators of banking crises: Satisfying policy requirements. *International Journal of Forecasting*, 30(3), 759–780.
+
+3. Lundberg, S., & Lee, S.I. (2017). A unified approach to interpreting model predictions. *NeurIPS*, 4768–4777.
+
+4. Diebold, F.X., & Mariano, R.S. (1995). Comparing predictive accuracy. *Journal of Business & Economic Statistics*, 13(3), 253–263.
+
+5. Hyndman, R.J., & Athanasopoulos, G. (2021). *Forecasting: Principles and Practice* (3rd ed.). OTexts.
+
+6. Bussière, M., & Fratzscher, M. (2006). Towards a new early warning system of financial crises. *Journal of International Money and Finance*, 25(6), 953–973.
+
+7. FSA Japan (2025). Attempt to identify early warning signals on credit risks using regional banks' loan data and macroeconomic indicators. *FSA Analytical Notes*, vol. 3.
+
+---
+
+## About
+
+**Research context:** Master's thesis, HSE University, 2026
+**Data sources:** Bank of Russia (banking statistics), Rosstat (macroeconomic indicators)
+
+---
+
+<div align="center">
+<sub>Built with Python · pandas · statsmodels · scikit-learn · SHAP</sub>
+</div>
