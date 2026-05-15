@@ -22,3 +22,14 @@ H=12:  Naive=-0.85  AR(1)=+0.78  OLS=+0.96  Lasso=+0.06  Ridge=+0.87  ← macro 
 ```
 
 **Implication:** EWS based on macro indicators requires a 12-month horizon. Standard EWS practice of 3–6 month horizons is suboptimal for Russian data.
+
+### 2. Structural Break After February 2022 Sanctions
+
+Formal tests confirm a statistically significant regime shift:
+
+| Test | Statistic | p-value | Result |
+|------|-----------|---------|--------|
+| Chow test (full model, 18 params) | F = 1.25 | 0.31 | Not significant — low power |
+| Chow test (top-5 SHAP variables) | F = 5.22 | < 0.001 | ✅ Significant at 0.1% level |
+| Interaction test | 6 variables | p < 0.10 | ✅ 4 sign changes |
+
